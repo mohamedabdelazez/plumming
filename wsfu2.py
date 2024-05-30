@@ -3,9 +3,33 @@ from tkinter import ttk, messagebox
 
 # Define the fixture_to_sfu dictionary here
 fixture_to_sfu = {
-    "Fixture A": {"cold_water": 5, "hot_water": 8, "total": 12},
-    "Fixture B": {"cold_water": 6, "hot_water": 9, "total": 13},
-    "Fixture C": {"cold_water": 7, "hot_water": 10, "total": 15}
+    "Bathroom group (Private Flush tank)": {"cold_water": 2.7, "hot_water": 1.5, "total": 3.6},
+    "Bathroom group (Private Flush valve)": {"cold_water": 6, "hot_water": 3, "total": 8},
+    "Bathtub (Private)": {"cold_water": 1, "hot_water": 1, "total": 1.4},
+    "Bathtub (Public)": {"cold_water": 3, "hot_water": 3, "total": 4},
+    "Bidet (Private)": {"cold_water": 1.5, "hot_water": 1.5, "total": 2},
+    "Combination fixture (Private)": {"cold_water": 2.25, "hot_water": 2.25, "total": 3},
+    "Dishwashing machine (Private)": {"cold_water": 0, "hot_water": 1.4, "total": 1.4},
+    "Drinking fountain (Offices, etc.)": {"cold_water": 0.25, "hot_water": 0, "total": 0.25},
+    "Kitchen sink (Private)": {"cold_water": 1, "hot_water": 1, "total": 1.4},
+    "Kitchen sink (Hotel, restaurant)": {"cold_water": 3, "hot_water": 3, "total": 4},
+    "Laundry trays(1 to 3) (Private)": {"cold_water": 1, "hot_water": 1, "total": 1.4},
+    "Lavatory (Private)": {"cold_water": 0.5, "hot_water": 0.5, "total": 0.7},
+    "Lavatory (Public)": {"cold_water": 1.5, "hot_water": 1.5, "total": 2},
+    "Service sink (Offices, etc.)": {"cold_water": 2.25, "hot_water": 2.25, "total": 3},
+    "Shower head (Public)": {"cold_water": 3, "hot_water": 3, "total": 4},
+    "Shower head (Private)": {"cold_water": 1, "hot_water": 1, "total": 1.4},
+    "Urinal (Public 1""flush valve)": {"cold_water": 10, "hot_water": 0, "total": 10},
+    "Urinal (Public 3/4""flush valve)": {"cold_water": 5, "hot_water": 0, "total": 5},
+    "Urinal (Public Flush tank)": {"cold_water": 3, "hot_water": 0, "total": 3},
+    "Washing machine (8 lb) (Private)": {"cold_water": 1, "hot_water": 1, "total": 1.4},
+    "Washing machine (8 lb) (Public)": {"cold_water": 2.25, "hot_water": 2.25, "total": 3},
+    "Washing machine (15 lb) (Public)": {"cold_water": 3, "hot_water": 3, "total": 4},
+    "Water closet (Private Flush valve)": {"cold_water": 6, "hot_water": 0, "total": 6},
+    "Water closet (Private Flush tank)": {"cold_water": 2.2, "hot_water": 0, "total": 2.2},
+    "Water closet (Public Flush valve)": {"cold_water": 10, "hot_water": 0, "total": 10},
+    "Water closet (Public Flush tank)": {"cold_water": 5, "hot_water": 0, "total": 5},
+    
     # Add more fixtures as needed
 }
 
@@ -13,14 +37,7 @@ def linear_interpolate(x0, y0, x1, y1, x):
     return y0 + (y1 - y0) * ((x - x0) / (x1 - x0))
 
 def get_gpm(fixture, water_type, flush_mechanism):
-    # Plumbing fixture to SFU mappings
-    fixture_to_sfu = {
-        "Fixture A": {"cold_water": 5, "hot_water": 8, "total": 12},
-        "Fixture B": {"cold_water": 6, "hot_water": 9, "total": 13},
-        "Fixture C": {"cold_water": 7, "hot_water": 10, "total": 15}
-        # Add more fixtures as needed
-    }
-
+    
     # SFU to GPM conversion tables based on IPC standards
     sfu_to_gpm_flush_tank = {
         1: 3, 2: 5, 3: 6.5, 4: 8, 5: 9.4, 6: 10.7, 7: 11.8, 8: 12.8, 9: 13.7, 10: 14.6,
@@ -41,10 +58,10 @@ def get_gpm(fixture, water_type, flush_mechanism):
     }
 
     # Calculate GPM based on the selected fixture, water type, and flush mechanism
-    if flush_mechanism == "Tank":
+    if flush_mechanism == "Flush Tank":
         sfu = fixture_to_sfu[fixture][water_type]
         gpm = linear_interpolate(1, 3, 1000, 208, sfu)
-    elif flush_mechanism == "Valve":
+    elif flush_mechanism == "Flush Valve":
         sfu = fixture_to_sfu[fixture][water_type]
         gpm = linear_interpolate(5, 15, 5000, 593, sfu)
 
@@ -61,36 +78,31 @@ root = tk.Tk()
 root.title("Plumbing Fixture GPM Calculator")
 
 fixture_var = tk.StringVar()
-fixture_var.set("Fixture A")  # default value
+fixture_var.set("Water closet (Private Flush valve)")  # default value
 
 water_type_var = tk.StringVar()
 water_type_var.set("cold_water")  # default value
 
 flush_mechanism_var = tk.StringVar()
-flush_mechanism_var.set("Tank")  # default value
+flush_mechanism_var.set("Flush Tank")  # default value
 
 result_var = tk.StringVar()
 
 fixture_label = tk.Label(root, text="Select Fixture:")
 fixture_label.pack()
 
-fixture_menu = ttk.Combobox(root, textvariable=fixture_var)
+fixture_menu = ttk.Combobox(root, textvariable=fixture_var, width=45)  # Increase the width as needed
 fixture_menu['values'] = list(fixture_to_sfu.keys())
 fixture_menu.pack()
 
-water_type_label = tk.Label(root, text="Select Water Type:")
-water_type_label.pack()
-
-water_type_menu = ttk.Combobox(root, textvariable=water_type_var)
+water_type_menu = ttk.Combobox(root, textvariable=water_type_var, width=45)  # Increase the width as needed
 water_type_menu['values'] = ["cold_water", "hot_water", "total"]
 water_type_menu.pack()
 
-flush_mechanism_label = tk.Label(root, text="Select Flush Mechanism:")
-flush_mechanism_label.pack()
-
-flush_mechanism_menu = ttk.Combobox(root, textvariable=flush_mechanism_var)
-flush_mechanism_menu['values'] = ["Tank", "Valve"]
+flush_mechanism_menu = ttk.Combobox(root, textvariable=flush_mechanism_var, width=45)  # Increase the width as needed
+flush_mechanism_menu['values'] = ["Flush Tank", "Flush Valve"]
 flush_mechanism_menu.pack()
+
 
 calculate_button = tk.Button(root, text="Calculate", command=calculate_gpm)
 calculate_button.pack()
