@@ -69,15 +69,18 @@ def get_gpm(fixture, water_type, flush_mechanism):
     if sfu in gpm_table:
         gpm = gpm_table[sfu]
     else:
-        # Interpolate if sfu not in the table
-        min_sfu, max_sfu = min(gpm_table.keys()), max(gpm_table.keys())
+        min_sfu = min(gpm_table.keys())
+        
         if sfu < min_sfu:
-            gpm = gpm_table[min_sfu]
-        elif sfu > max_sfu:
-            gpm = gpm_table[max_sfu]
+            # Handle exceptional case
+            gpm = gpm_table[min_sfu] * (sfu / min_sfu)
         else:
-            min_sfu_gpm, max_sfu_gpm = gpm_table[min_sfu], gpm_table[max_sfu]
-            gpm = min_sfu_gpm + ((sfu - min_sfu) / (max_sfu - min_sfu)) * (max_sfu_gpm - min_sfu_gpm)
+            # Interpolate between two values
+            prev_sfu = max(gpm_table.keys()) if sfu == max(gpm_table.keys()) else next((k for k in gpm_table.keys() if k < sfu), min_sfu)
+            next_sfu = next((k for k in gpm_table.keys() if k > sfu), max(gpm_table.keys()))
+            prev_gpm = gpm_table[prev_sfu]
+            next_gpm = gpm_table[next_sfu]
+            gpm = prev_gpm + ((sfu - prev_sfu) / (next_sfu - prev_sfu)) * (next_gpm - prev_gpm)
     
     return gpm
 
