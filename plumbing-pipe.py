@@ -27,11 +27,9 @@ def calculate_velocity(flow_rate, inner_diameter):
 # Function to calculate head loss using the Darcy-Weisbach equation
 def calculate_head_loss(flow_rate, inner_diameter, fluid_density, fluid_viscosity, pipe_length, pipe_material):
     # Convert inner diameter from inches to meters
-    inner_diameter_mm = inner_diameter * 25.4
-    inner_diameter_m = inner_diameter_mm / 1000
+    inner_diameter_m = inner_diameter * 0.0254
     # Convert flow rate from gpm to m^3/s
-    flow_rate_ls = flow_rate * 0.06
-    flow_rate_m3s = flow_rate_ls / 1000
+    flow_rate_m3s = flow_rate / 15850.323
     # Calculate pipe area
     pipe_area = (inner_diameter_m ** 2) * math.pi / 4
     # Calculate velocity
@@ -47,9 +45,11 @@ def calculate_head_loss(flow_rate, inner_diameter, fluid_density, fluid_viscosit
     roughness = pipe_material_and_roughness.get(pipe_material, 0.007 / 1000)
     # Calculate friction factor using Colebrook-White equation
     friction_factor = calculate_friction_factor(inner_diameter_m, reynolds_number, roughness)
-    # Calculate head loss
-    head_loss = (friction_factor * pipe_length * velocity ** 2) / (2 * 9.81 * inner_diameter_m)
-    return head_loss
+    # Calculate head loss in meters of water
+    head_loss_m = (friction_factor * pipe_length * velocity ** 2) / (2 * 9.81 * inner_diameter_m)
+    # Convert head loss to psi
+    head_loss_psi = head_loss_m * 0.4335
+    return head_loss_psi
 
 # Function to calculate friction factor using Colebrook-White equation
 def calculate_friction_factor(diameter, reynolds, roughness):
