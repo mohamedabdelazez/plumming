@@ -177,8 +177,9 @@ fixture_label = tk.Label(root, text="Select Fixture:")
 fixture_label.grid(row=1, column=0, padx=10, pady=10)
 fixture_type = tk.StringVar()
 fixture_values = list(aspe_data["Apartment"].keys()) + ["Custom"]
-fixture_dropdown = ttk.Combobox(root, textvariable=fixture_type, values=fixture_values)
+fixture_dropdown = ttk.Combobox(root, textvariable=fixture_type, values=fixture_values, width=22)
 fixture_dropdown.grid(row=1, column=1, padx=10, pady=10)
+
 
 # Custom GPH entry (disabled by default)
 custom_gph_label = tk.Label(root, text="Custom GPH:")
