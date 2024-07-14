@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-
+ 
 # Data from the ASPE table
 aspe_data = {
     "Apartment": {
