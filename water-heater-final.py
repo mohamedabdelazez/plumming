@@ -131,26 +131,26 @@ aspe_data = {
 demand_factors = {
     "Apartment": 0.30,
     "Club": 0.30,
-    "Gymnasium": 0.30,
-    "Hospital": 0.50,
-    "Hotel": 0.40,
-    "Industrial Plant": 0.30,
-    "Office": 0.20,
-    "Private Residence": 0.40,
-    "School": 1.00,
+    "Gymnasium": 0.40,
+    "Hospital": 0.25,
+    "Hotel": 0.25,
+    "Industrial Plant": 0.40,
+    "Office": 0.30,
+    "Private Residence": 0.30,
+    "School": 0.40,
     "YMCA": 0.40,
 }
 
 storage_capacity_factors = {
     "Apartment": 1.25,
     "Club": 0.90,
-    "Gymnasium": 0.90,
-    "Hospital": 1.00,
-    "Hotel": 1.25,
+    "Gymnasium": 1.00,
+    "Hospital": 0.60,
+    "Hotel": 0.80,
     "Industrial Plant": 1.00,
-    "Office": 0.90,
-    "Private Residence": 0.90,
-    "School": 2.00,
+    "Office": 2.00,
+    "Private Residence": 0.70,
+    "School": 1.00,
     "YMCA": 1.00,
 }
 
@@ -388,7 +388,7 @@ def calculate_heater_capacity():
     # Calculate Storage Capacity
     storage_capacity = cumulative_gph * demand_factor * storage_capacity_factor
 
-    heater_capacity_label.config(text=f"Storage Capacity: {storage_capacity:.2f} GPH\n"
+    heater_capacity_label.config(text=f"Storage Capacity: {storage_capacity:.2f} GALLON\n"
                                      f"Tank Heater Capacity: {tank_heater_capacity_btu:.2f} BTU/hr | {tank_heater_capacity_kw:.2f} kW\n"
                                      f"Instantaneous Heater Capacity: {instantaneous_heater_capacity_btu:.2f} BTU/hr | {instantaneous_heater_capacity_kw:.2f} kW")
 
